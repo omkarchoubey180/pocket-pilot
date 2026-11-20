@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f7f8f2">
+  <meta name="description" content="Pocket Pilot helps students make room for what matters with simple spending and budget insights.">
+  <title>Pocket Pilot — Student Expense Manager</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="stage">
+    <div class="app-frame" id="appFrame">
+      <main class="app-scroll" id="appScroll">
+        <section class="screen active" data-screen="home" aria-labelledby="homeTitle">
+          <header class="home-header">
+            <a class="brand" href="#home" aria-label="Pocket Pilot home">
+              <span class="brand-mark" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M3.5 11.1 20 4.2l-6.9 16.3-2.4-6.1-7.2-3.3Z"/><path d="m10.7 14.4 4.4-4.3"/></svg></span>
+              <span><b>Pocket Pilot</b><small>A little smarter with every spend.</small></span>
+            </a>
+            <button class="icon-button" id="notificationButton" aria-label="Notifications"><svg viewBox="0 0 24 24"><path d="M18 9a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9ZM10 21h4"/></svg><span class="notification-dot"></span></button>
+          </header>
+          <div class="screen-body home-body">
+            <p class="greeting">Hey, Alex</p>
+            <h1 id="homeTitle">Make room for what<br class="desktop-break"> matters.</h1>
+            <article class="spend-card">
+              <div class="spend-card-orbit"></div>
+              <div class="d-flex justify-content-between align-items-start position-relative">
+                <div><span class="eyebrow light-eyebrow">LEFT TO SPEND</span><div class="spend-amount" id="homeBalance">₹372.00</div></div>
+                <span class="balance-pill" id="balancePill">₹372 left</span>
+              </div>
+              <div class="budget-meta"><span>June budget</span><b id="spentSummary">₹428 of ₹800 spent</b></div>
+              <div class="progress budget-progress" role="progressbar" aria-label="Monthly budget spent" aria-valuemin="0" aria-valuemax="100" aria-valuenow="54"><div class="progress-bar" id="homeProgress" style="width:53.5%"></div></div>
+              <p class="encouragement" id="budgetMessage">You’re on track. Keep it up!</p>
+            </article>
+            <button class="week-card" type="button" data-go="insights" aria-label="Explore weekly insights">
+              <span class="week-top"><b>This week</b><span>↓ 12% vs last week</span></span>
+              <span class="week-total">₹96.50</span>
+              <span class="week-link">Explore week <span aria-hidden="true">→</span></span>
+              <span class="mini-chart" aria-hidden="true"><i style="--bar:35%"></i><i style="--bar:54%"></i><i style="--bar:42%"></i><i style="--bar:71%"></i><i style="--bar:50%"></i><i class="peak" style="--bar:100%"></i><i style="--bar:28%"></i></span>
+              <span class="day-labels" aria-hidden="true"><i>M</i><i>T</i><i>W</i><i>T</i><i>F</i><i>S</i><i>S</i></span>
+            </button>
+            <div class="section-row"><h2>Recent expenses</h2><button class="text-action" type="button" data-go="activity">See all</button></div>
+            <div class="expense-list compact-list" id="homeExpenses"></div>
+            <button class="add-expense-inline" type="button" data-go="add-expense"><span>＋</span> Add an expense</button>
+          </div>
+        </section>
+
+        <section class="screen" data-screen="budgets" aria-labelledby="budgetsTitle" hidden>
+          <div class="sub-header"><button class="back-button" type="button" data-go="home" aria-label="Back to overview"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><h1 id="budgetsTitle">Your budgets</h1><span class="month-label">JUN 2025</span></div>
+          <div class="screen-body sub-body">
+            <article class="budget-summary-card">
+              <div class="summary-top"><span class="eyebrow light-eyebrow">YOUR MONTHLY BUDGET</span><button class="lime-button" type="button" data-edit-category="Food & drinks">Edit</button></div>
+              <div class="budget-big-total">₹800.00</div>
+              <div class="budget-summary-foot"><span>₹428 spent</span><span>₹372 available</span></div>
+            </article>
+            <div class="section-row budget-section-heading"><h2>A plan for every penny</h2></div>
+            <div class="category-budget-list" id="categoryBudgetList"></div>
+            <button class="add-expense-inline" type="button" data-go="edit-budget" data-edit-category="Food & drinks"><span>＋</span> Adjust a category budget</button>
+          </div>
+        </section>
+
+        <section class="screen" data-screen="category-detail" aria-labelledby="categoryDetailTitle" hidden>
+          <div class="sub-header"><button class="back-button" type="button" data-go="budgets" aria-label="Back to budgets"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><h1 id="categoryDetailTitle">Food &amp; drinks</h1><span class="month-label">JUN 2025</span></div>
+          <div class="screen-body sub-body category-detail-body">
+            <article class="category-detail-hero" id="categoryDetailHero"><span class="category-icon food" id="categoryDetailIcon"></span><span class="eyebrow light-eyebrow">MONTHLY CATEGORY BUDGET</span><div class="category-detail-total" id="categoryDetailTotal">₹200.00</div><div class="category-detail-foot"><span id="categoryDetailSpent">₹156 spent</span><span id="categoryDetailRemaining">₹44 left</span></div><div class="category-detail-track"><span id="categoryDetailProgress"></span></div></article>
+            <div class="category-detail-actions"><div><span>Monthly limit</span><b id="categoryDetailLimit">₹200</b></div><button class="lime-button" type="button" id="categoryDetailEdit">Edit budget</button></div>
+            <div class="section-row"><h2>Recent in this category</h2></div>
+            <div class="expense-list" id="categoryExpenses"></div>
+            <article class="tip-banner category-tip"><span class="tip-spark">✳</span><div><b id="categoryTipTitle">Small swaps, bigger plans.</b><p id="categoryTipText">Pack lunch twice a week. Save around ₹40/month.</p></div></article>
+          </div>
+        </section>
+
+        <section class="screen" data-screen="insights" aria-labelledby="insightsTitle" hidden>
+          <div class="sub-header"><button class="back-button" type="button" data-go="home" aria-label="Back to overview"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><h1 id="insightsTitle">Your money, in focus</h1></div>
+          <div class="screen-body sub-body">
+            <article class="insights-hero"><span class="eyebrow">THIS WEEK</span><div class="insights-total">₹96.50</div><p>Weekly insights</p><span class="insight-pill">12% less than last week</span></article>
+            <h2 class="section-heading">Your weekly rhythm</h2>
+            <article class="rhythm-card"><p>Saturday was your highest-spend day.</p><div class="week-chart" id="weekChart" aria-label="Weekly spending chart"></div><div class="chart-days"><span>M</span><span>T</span><span>W</span><span>T</span><span>F</span><span>S</span><span>S</span></div></article>
+            <article class="tip-banner"><span class="tip-spark">✳</span><div><b>Keep the momentum going.</b><p>Your spending is down 12%. Small, consistent choices make room for bigger plans.</p></div></article>
+            <div class="section-row mt-4"><h2>Spending this week</h2><button class="text-action" type="button" data-go="activity">See activity</button></div>
+            <div id="weeklyExpenses" class="expense-list"></div>
+          </div>
+        </section>
+
+        <section class="screen" data-screen="activity" aria-labelledby="activityTitle" hidden>
+          <div class="sub-header"><button class="back-button" type="button" data-go="home" aria-label="Back to overview"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><h1 id="activityTitle">Your activity</h1><span class="month-label">JUN 2025</span></div>
+          <div class="screen-body sub-body">
+            <label class="search-field"><svg viewBox="0 0 24 24"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input id="expenseSearch" type="search" placeholder="Search expenses" aria-label="Search expenses"></label>
+            <div class="filter-pills" id="filterPills" aria-label="Filter expenses"><button class="filter-pill active" type="button" data-filter="All">All</button><button class="filter-pill" type="button" data-filter="Food & drinks">Food</button><button class="filter-pill" type="button" data-filter="Transport">Travel</button><button class="filter-pill" type="button" data-filter="Education">Education</button></div>
+            <article class="activity-total-card"><span class="eyebrow light-eyebrow">TOTAL SPENT THIS MONTH</span><div class="activity-total-line"><b id="activityTotal">₹428.00</b><span>18 expenses</span></div></article>
+            <div class="section-row activity-date-heading"><h2>Today, June 18</h2><span class="count-label" id="expenseCount">18 expenses</span></div>
+            <div class="expense-list" id="activityExpenses"></div>
+            <p class="empty-message" id="emptyMessage" hidden>No expenses match your search.</p>
+            <button class="add-expense-inline" type="button" data-go="add-expense"><span>＋</span> Add an expense</button>
+          </div>
+        </section>
+
+        <section class="screen" data-screen="add-expense" aria-labelledby="addExpenseTitle" hidden>
+          <div class="sub-header"><button class="back-button" type="button" data-go="activity" aria-label="Back to activity"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><h1 id="addExpenseTitle">Add expense</h1></div>
+          <form class="screen-body sub-body expense-form" id="expenseForm">
+            <label class="form-label" for="expenseAmount">HOW MUCH DID YOU SPEND?</label>
+            <div class="amount-input-wrap amount-hero"><span>₹</span><input id="expenseAmount" name="amount" type="number" min="0.01" step="0.01" placeholder="6.50" value="6.50" required></div>
+            <label class="form-label" for="expenseName">Expense name</label><input class="form-control custom-control" id="expenseName" name="name" type="text" value="Campus café" placeholder="e.g. Coffee with friends" maxlength="42" required>
+            <span class="form-label">Category</span><div class="category-choice-grid">
+              <label class="category-choice selected"><input type="radio" name="category" value="Food & drinks" checked><span class="choice-symbol food">♨</span><span>Food</span></label>
+              <label class="category-choice"><input type="radio" name="category" value="Transport"><span class="choice-symbol transport">▣</span><span>Travel</span></label>
+              <label class="category-choice"><input type="radio" name="category" value="Education"><span class="choice-symbol education">▤</span><span>Education</span></label>
+              <label class="category-choice"><input type="radio" name="category" value="Everything else"><span class="choice-symbol other">▢</span><span>Other</span></label>
+            </div>
+            <div class="form-two-col"><div><label class="form-label" for="expenseDate">Date</label><input class="form-control custom-control" id="expenseDate" name="date" type="date" required></div><div><label class="form-label" for="expensePaidWith">Paid with</label><select class="form-select custom-control" id="expensePaidWith" name="paidWith"><option>Debit card</option><option>Cash</option><option>UPI</option></select></div></div>
+            <label class="form-label" for="expenseNote">Note <span class="optional-label">OPTIONAL</span></label><textarea class="form-control custom-control note-control" id="expenseNote" name="note" rows="2" placeholder="Coffee before the morning lecture"></textarea>
+            <button class="primary-button w-100" type="submit">Save expense <span>→</span></button>
+          </form>
+        </section>
+
+        <section class="screen" data-screen="expense-detail" aria-labelledby="detailTitle" hidden>
+          <div class="sub-header"><button class="back-button" type="button" data-go="activity" aria-label="Back to activity"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><h1 id="detailTitle">Expense details</h1></div>
+          <div class="screen-body sub-body detail-body">
+            <div class="detail-icon" id="detailIcon"></div><span class="eyebrow" id="detailCategory">FOOD &amp; DRINKS</span><h2 id="detailName">Campus café</h2><div class="detail-amount" id="detailAmount">−₹6.50</div><div class="detail-status">Added to your June expenses</div>
+            <div class="detail-facts"><div><span>Category</span><b id="detailCategoryName">Food &amp; drinks</b></div><div><span>Date</span><b id="detailDate">Today</b></div><div><span>Note</span><b id="detailNote">Lunch between classes</b></div></div>
+            <button class="secondary-button w-100" id="deleteExpense" type="button">Remove expense</button>
+          </div>
+        </section>
+
+        <section class="screen" data-screen="edit-budget" aria-labelledby="editBudgetTitle" hidden>
+          <div class="sub-header"><button class="back-button" type="button" data-go="budgets" aria-label="Back to budgets"><svg viewBox="0 0 24 24"><path d="m15 18-6-6 6-6"/></svg></button><h1 id="editBudgetTitle">Edit budget</h1></div>
+          <form class="screen-body sub-body expense-form" id="budgetForm">
+            <div class="edit-category-badge" id="editCategoryBadge"><span class="category-icon">☕</span><span>Food &amp; drinks</span></div>
+            <span class="eyebrow">MONTHLY CATEGORY LIMIT</span>
+            <label class="form-label" for="budgetAmount">Set your budget</label>
+            <div class="amount-input-wrap"><span>₹</span><input id="budgetAmount" type="number" min="1" step="1" required></div>
+            <div class="budget-edit-summary"><span>Already spent</span><b id="editSpent">₹156</b><span>Left after this change</span><b id="editRemaining">₹44</b></div>
+            <button class="primary-button w-100" type="submit">Save budget <span>→</span></button>
+          </form>
+        </section>
+      </main>
+
+      <button class="floating-add" type="button" data-go="add-expense" aria-label="Add expense"><svg viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></svg></button>
+      <nav class="bottom-nav" aria-label="Main navigation">
+        <button class="bottom-nav-item active" type="button" data-go="home"><span class="nav-icon home-icon"><svg viewBox="0 0 24 24"><path d="m3 10 9-7 9 7v10a1 1 0 0 1-1 1h-5v-7H9v7H4a1 1 0 0 1-1-1z"/></svg></span><small>Home</small></button>
+        <button class="bottom-nav-item" type="button" data-go="activity"><span class="nav-icon"><svg viewBox="0 0 24 24"><path d="M4 5h16M4 12h16M4 19h16"/><circle cx="8" cy="5" r="1.5"/><circle cx="16" cy="12" r="1.5"/><circle cx="10" cy="19" r="1.5"/></svg></span><small>Activity</small></button>
+        <button class="bottom-nav-item" type="button" data-go="budgets"><span class="nav-icon"><svg viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M3 9h18M8 14h4"/></svg></span><small>Budgets</small></button>
+      </nav>
+      <div class="toast-container position-absolute bottom-0 start-50 translate-middle-x p-3"><div id="appToast" class="toast align-items-center border-0" role="status" aria-live="polite"><div class="d-flex"><div class="toast-body" id="toastMessage">Saved to your expenses.</div><button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button></div></div></div>
+    </div>
+  </div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
